@@ -1,0 +1,250 @@
+.header {
+    background-color: #000;
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 64px;
+  }
+  
+  .logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo h1 {
+    padding-top: 10px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .logo span {
+    color: #fff;
+    background-color: #000;
+    padding: 2px 4px;
+    margin-left: 2px;
+  }
+  
+  .menu-toggle {
+    display: none;
+    cursor: pointer;
+  }
+  
+  .hamburger {
+    width: 30px;
+    height: 20px;
+    position: relative;
+  }
+  
+  .hamburger span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: white;
+    opacity: 1;
+    transform: rotate(0deg);
+    transition: 0.25s ease-in-out;
+  }
+  
+  .hamburger span:nth-child(1) {
+    top: 0px;
+  }
+  
+  .hamburger span:nth-child(2) {
+    top: 9px;
+  }
+  
+  .hamburger span:nth-child(3) {
+    top: 18px;
+  }
+  
+  .hamburger.active span:nth-child(1) {
+    top: 9px;
+    transform: rotate(135deg);
+  }
+  
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger.active span:nth-child(3) {
+    top: 9px;
+    transform: rotate(-135deg);
+  }
+  
+  .nav-menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-menu ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-menu li {
+    position: relative;
+    margin: 0 5px;
+  }
+  
+  .nav-menu a, 
+  .nav-menu button {
+    color: white;
+    text-decoration: none;
+    padding: 22px 15px;
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .nav-menu a:hover,
+  .nav-menu button:hover {
+    background-color: #333;
+  }
+  
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown-toggle {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dropdown-toggle::after {
+    content: '';
+    display: inline-block;
+    margin-left: 8px;
+    border-top: 5px solid white;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    display: none;
+    padding: 10px 0;
+    border-radius: 4px;
+  }
+  
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown-menu button {
+    color: #333;
+    padding: 10px 20px;
+    text-align: left;
+    width: 100%;
+    font-weight: normal;
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: #f5f5f5;
+    color: #000;
+  }
+  
+  @media (max-width: 1024px) {
+    .menu-toggle {
+      display: block;
+    }
+    
+    .nav-menu {
+      position: fixed;
+      top: 64px;
+      right: -300px;
+      width: 300px;
+      height: calc(100vh - 64px);
+      padding: 20px;
+      background-color: #000;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+    }
+    
+    .nav-menu.active {
+      right: 0;
+    }
+    
+    .nav-menu ul {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .nav-menu li {
+      margin: 0;
+      width: 100%;
+    }
+    
+    .nav-menu a,
+    .nav-menu button {
+      padding: 15px 0;
+      width: 100%;
+      border-bottom: 1px solid #333;
+    }
+    
+    .dropdown-menu {
+      position: static;
+      box-shadow: none;
+      display: none;
+      padding: 0 0 0 15px;
+      background-color: transparent;
+    }
+    
+    .dropdown.active .dropdown-menu {
+      display: block;
+    }
+    
+    .dropdown-menu button {
+      color: white;
+      padding: 12px 15px;
+    }
+    
+    .dropdown-menu button:hover {
+      background-color: #333;
+      color: white;
+    }
+  }
+
+.search-form {
+    margin-top: 30px;
+}
+.search-form input {
+    border: none;
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 12px;
+    /* background-color: transparent; */
+   
+}
+.search-form button {
+    background-color: transparent;
+    border: none;
+}
+
