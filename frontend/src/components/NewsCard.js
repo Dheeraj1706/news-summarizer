@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import '../styles/components/NewsCard.css';
 import { summarizeArticle } from '../services/api';
+import { FaVolumeUp, FaStop } from 'react-icons/fa';
 
 const NewsCard = ({ article }) => {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speech, setSpeech] = useState(null);
   
   const { title, description, url, urlToImage, publishedAt, source } = article;
   
@@ -34,11 +37,33 @@ const NewsCard = ({ article }) => {
       setLoading(false);
     }
   };
+
+  const handleAudioPlay = () => {
+    if (isPlaying) {
+      // Stop current speech
+      if (speech) {
+        window.speechSynthesis.cancel();
+        setSpeech(null);
+      }
+      setIsPlaying(false);
+      return;
+    }
+
+    // Start speech
+    const text = summary ? `${title}. ${summary}` : `${title}. ${description || ''}`;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => {
+      setIsPlaying(false);
+      setSpeech(null);
+    };
+    
+    window.speechSynthesis.speak(utterance);
+    setSpeech(utterance);
+    setIsPlaying(true);
+  };
   
   return (
     <div className="news-card">
-      
-      
       <div className="news-card-content">
         <h3 className="news-card-title">
           <a href={url} target="_blank" rel="noopener noreferrer">
@@ -62,7 +87,20 @@ const NewsCard = ({ article }) => {
         )}
         
         <div className="news-card-actions">
-          <button ></button>
+          <button 
+            className={`audio-btn ${isPlaying ? 'playing' : ''}`}
+            onClick={handleAudioPlay}
+          >
+            {isPlaying ? (
+              <>
+                <FaStop className="audio-icon" /> Stop Audio
+              </>
+            ) : (
+              <>
+                <FaVolumeUp className="audio-icon" /> Listen
+              </>
+            )}
+          </button>
 
           <button 
             className={`summary-btn ${loading ? 'loading' : ''}`}

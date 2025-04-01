@@ -61,15 +61,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
+  width: 100%;
 }
 
 .content-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: -1rem;
+  grid-template-columns: 3fr 1fr;
+  gap: 2rem;
   margin-top: 2rem;
 }
 
