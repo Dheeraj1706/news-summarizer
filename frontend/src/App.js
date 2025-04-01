@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import SearchPage from './pages/SearchPage';
 import LoginPage from './pages/LoginPage';
+import FavoritesView from './pages/FavoritesView';
 
 function App() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/favorites-view" element={<FavoritesView />} />
         </Routes>
       </main>
       {!isLoginPage && <Footer />}

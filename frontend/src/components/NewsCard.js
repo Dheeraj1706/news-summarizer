@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/components/NewsCard.css';
 import { summarizeArticle } from '../services/api';
-import { FaVolumeUp, FaStop } from 'react-icons/fa';
+import { FaVolumeUp, FaStop, FaHeart, FaRegHeart } from 'react-icons/fa';
 
 const NewsCard = ({ article }) => {
   const [summary, setSummary] = useState('');
@@ -9,6 +9,7 @@ const NewsCard = ({ article }) => {
   const [expanded, setExpanded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speech, setSpeech] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
   
   const { title, description, url, urlToImage, publishedAt, source } = article;
   
@@ -62,6 +63,43 @@ const NewsCard = ({ article }) => {
     setIsPlaying(true);
   };
   
+  const toggleFavorite = () => {
+    const userEmail = localStorage.getItem('userEmail');
+    const favoritesKey = userEmail ? `favorites_${userEmail}` : 'favorites';
+    const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
+    
+    if (isFavorite) {
+      // Remove from favorites
+      const updatedFavorites = favorites.filter(fav => fav.url !== url);
+      localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
+    } else {
+      // Add to favorites
+      const articleToSave = {
+        title,
+        description,
+        url,
+        urlToImage,
+        publishedAt,
+        source
+      };
+      localStorage.setItem(favoritesKey, JSON.stringify([...favorites, articleToSave]));
+    }
+    
+    setIsFavorite(!isFavorite);
+    
+    // Dispatch a custom event to notify about favorites change
+    window.dispatchEvent(new Event('storage'));
+  };
+  
+  // Check if this article is in favorites when component mounts
+  useEffect(() => {
+    const userEmail = localStorage.getItem('userEmail');
+    const favoritesKey = userEmail ? `favorites_${userEmail}` : 'favorites';
+    const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
+    const isInFavorites = favorites.some(fav => fav.url === url);
+    setIsFavorite(isInFavorites);
+  }, [url]);
+  
   return (
     <div className="news-card">
       <div className="news-card-content">
@@ -109,6 +147,21 @@ const NewsCard = ({ article }) => {
           >
             {loading ? 'Summarizing...' : 
              summary ? (expanded ? 'Show Less' : 'Read Full Summary') : 'Generate AI Summary'}
+          </button>
+          
+          <button
+            className={`favorite-btn ${isFavorite ? 'favorite-active' : ''}`}
+            onClick={toggleFavorite}
+          >
+            {isFavorite ? (
+              <>
+                <FaHeart className="favorite-icon" /> Saved
+              </>
+            ) : (
+              <>
+                <FaRegHeart className="favorite-icon" /> Save
+              </>
+            )}
           </button>
           
           <a 
