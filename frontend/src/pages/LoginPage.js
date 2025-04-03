@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../styles/LoginPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,24 @@ function LoginPage() {
     password: ""
   });
   const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    const cursor = document.createElement('div');
+    cursor.className = 'cursor-dot';
+    document.body.appendChild(cursor);
+
+    const moveCursor = (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    };
+
+    document.addEventListener('mousemove', moveCursor);
+
+    return () => {
+      document.removeEventListener('mousemove', moveCursor);
+      document.body.removeChild(cursor);
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData({
