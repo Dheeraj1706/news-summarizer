@@ -129,7 +129,7 @@ const Header = () => {
         </nav>
         
         <div className="header-right">
-          <form className="search-form desktop-only" onSubmit={handleSearch}>
+          <form role="form" className="search-form desktop-only" onSubmit={handleSearch}>
             <input
               type="text"
               placeholder="Search news..."
@@ -139,28 +139,28 @@ const Header = () => {
             <button type="submit"><IoMdSearch /></button>
           </form>
           
-          <div className="user-actions">
-            <button 
-              className={`favorites-button ${location.pathname === '/favorites-view' ? 'active' : ''}`} 
-              onClick={handleFavoritesClick}
-              title="View favorites"
-            >
-              <FaHeart className="favorites-icon" />
-              {favoritesCount > 0 && <span className="favorites-count">{favoritesCount}</span>}
-            </button>
-            
-            {userEmail ? (
-              <div className="user-info">
-                <FaUser />
-                <span className="user-email">{userEmail}</span>
-                <button className="logout-button" onClick={handleLogout} title="Logout">
-                  <FaSignOutAlt />
-                </button>
+          <button 
+            className={`favorites-button ${location.pathname === '/favorites-view' ? 'active' : ''}`} 
+            onClick={handleFavoritesClick}
+            title="View favorites"
+          >
+            <FaHeart className="favorites-icon" />
+            {favoritesCount > 0 && <span className="favorites-count">{favoritesCount}</span>}
+          </button>
+          
+          {userEmail ? (
+            <div className="auth-controls">
+              <div className="user-display">
+                <FaUser className="user-icon" />
+                <span>{userEmail}</span>
               </div>
-            ) : (
-              <Link to="/login" className="login-link">Login</Link>
-            )}
-          </div>
+              <button onClick={handleLogout} className="logout-btn" title="Logout">
+                <FaSignOutAlt />
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="login-link">Login</Link>
+          )}
         </div>
       </div>
     </header>
