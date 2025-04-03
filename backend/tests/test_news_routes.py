@@ -1,6 +1,12 @@
 import json
 import pytest
+import sys
+import os
 from unittest.mock import patch, MagicMock
+
+# Add the parent directory to sys.path to allow importing from the root directory
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from app import app
 
 @pytest.fixture
@@ -10,7 +16,7 @@ def client():
     with app.test_client() as client:
         yield client
 
-@patch('routes.news_routes.requests.get')
+@patch('services.news_service.requests.get')
 def test_get_top_headlines(mock_get, client):
     """Test getting top headlines"""
     # Mock response data
@@ -45,11 +51,12 @@ def test_get_top_headlines(mock_get, client):
     # Check response
     assert response.status_code == 200
     data = json.loads(response.data)
-    assert len(data['articles']) == 2
-    assert data['articles'][0]['title'] == 'Test Article 1'
-    assert data['articles'][1]['title'] == 'Test Article 2'
+    assert data['status'] == 'success'
+    assert len(data['data']) == 2
+    assert data['data'][0]['title'] == 'Test Article 1'
+    assert data['data'][1]['title'] == 'Test Article 2'
 
-@patch('routes.news_routes.requests.get')
+@patch('services.news_service.requests.get')
 def test_get_news_by_category(mock_get, client):
     """Test getting news by category"""
     # Mock response data
@@ -76,11 +83,12 @@ def test_get_news_by_category(mock_get, client):
     # Check response
     assert response.status_code == 200
     data = json.loads(response.data)
-    assert len(data['articles']) == 1
-    assert data['articles'][0]['title'] == 'Test Tech Article'
-    assert data['articles'][0]['source']['name'] == 'Tech Source'
+    assert data['status'] == 'success'
+    assert len(data['data']) == 1
+    assert data['data'][0]['title'] == 'Test Tech Article'
+    assert data['data'][0]['source']['name'] == 'Tech Source'
 
-@patch('routes.news_routes.requests.get')
+@patch('services.news_service.requests.get')
 def test_search_news(mock_get, client):
     """Test searching news"""
     # Mock response data
@@ -107,19 +115,22 @@ def test_search_news(mock_get, client):
     # Check response
     assert response.status_code == 200
     data = json.loads(response.data)
-    assert len(data['articles']) == 1
-    assert data['articles'][0]['title'] == 'Test Search Result'
+    assert data['status'] == 'success'
+    assert len(data['data']) == 1
+    assert data['data'][0]['title'] == 'Test Search Result'
 
-@patch('routes.news_routes.requests.get')
+@patch('services.news_service.requests.get')
 def test_error_handling(mock_get, client):
     """Test error handling in news routes"""
     # Mock error response
     mock_response = MagicMock()
     mock_response.status_code = 404
-    mock_get.return_value = mock_response
+    mock_get.side_effect = Exception("API Error")
 
     # Send request
     response = client.get('/api/news/top-headlines')
     
     # Check response
-    assert response.status_code == 404 
+    assert response.status_code == 500
+    data = json.loads(response.data)
+    assert data['status'] == 'error' 
