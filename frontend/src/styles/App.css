@@ -21,7 +21,7 @@
 /* Base Styles */
 * {
   box-sizing: border-box;
-  margin: -2px;
+  margin: 0;
   padding: 0;
 }
 
