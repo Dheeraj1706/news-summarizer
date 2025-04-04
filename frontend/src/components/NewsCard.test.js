@@ -1,12 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import NewsCard from './NewsCard';
-import { summarizeArticle } from '../services/api';
-
-// Mock the API service
-jest.mock('../services/api', () => ({
-  summarizeArticle: jest.fn(),
-}));
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -48,8 +42,8 @@ window.dispatchEvent = jest.fn();
 
 describe('NewsCard Component', () => {
   const mockArticle = {
-    title: 'Test Article Title',
-    description: 'This is a test description for the article.',
+    title: 'AI Technology Advances',
+    description: 'New developments in artificial intelligence technology',
     url: 'https://example.com/article',
     urlToImage: 'https://example.com/image.jpg',
     publishedAt: '2023-04-20T12:00:00Z',
@@ -65,8 +59,8 @@ describe('NewsCard Component', () => {
   test('renders article details correctly', () => {
     render(<NewsCard article={mockArticle} />);
     
-    expect(screen.getByText('Test Article Title')).toBeInTheDocument();
-    expect(screen.getByText('This is a test description for the article.')).toBeInTheDocument();
+    expect(screen.getByText('AI Technology Advances')).toBeInTheDocument();
+    expect(screen.getByText('New developments in artificial intelligence technology')).toBeInTheDocument();
     
     // Check if the Read Full Article link is correct
     const fullArticleLink = screen.getByText('Read Full Article');
@@ -93,12 +87,6 @@ describe('NewsCard Component', () => {
   });
 
   test('generates summary when generate summary button is clicked', async () => {
-    // Mock the API response
-    summarizeArticle.mockResolvedValue({
-      status: 'success',
-      data: { summary: 'This is a test summary.' },
-    });
-    
     render(<NewsCard article={mockArticle} />);
     
     // Click generate summary button
@@ -107,10 +95,38 @@ describe('NewsCard Component', () => {
     // Check if button text changes to loading state
     expect(screen.getByText(/Summarizing/i)).toBeInTheDocument();
     
-    // Wait for the summary to be generated
+    // Wait for the summary to be generated (after 1.2s delay)
     await waitFor(() => {
-      expect(screen.getByText(/AI Summary/i)).toBeInTheDocument();
-    });
+      expect(screen.getByText(/AI Summary:/i)).toBeInTheDocument();
+      expect(screen.getByText(/Artificial intelligence has revolutionized/i)).toBeInTheDocument();
+    }, { timeout: 2000 });
+    
+    // Verify the button text changed
+    expect(screen.getByText(/Read Full Summary/i)).toBeInTheDocument();
+  });
+
+  test('toggles summary expansion when clicking read full summary button', async () => {
+    render(<NewsCard article={mockArticle} />);
+    
+    // Generate summary first
+    fireEvent.click(screen.getByText(/Generate AI Summary/i));
+    
+    // Wait for summary to appear
+    await waitFor(() => {
+      expect(screen.getByText(/AI Summary:/i)).toBeInTheDocument();
+    }, { timeout: 2000 });
+    
+    // Click to expand
+    fireEvent.click(screen.getByText(/Read Full Summary/i));
+    
+    // Verify button text changed
+    expect(screen.getByText(/Show Less/i)).toBeInTheDocument();
+    
+    // Click again to collapse
+    fireEvent.click(screen.getByText(/Show Less/i));
+    
+    // Verify button text changed back
+    expect(screen.getByText(/Read Full Summary/i)).toBeInTheDocument();
   });
 
   test('plays and stops audio when listen button is clicked', () => {

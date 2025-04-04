@@ -107,7 +107,7 @@ const Header = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <button type="submit"><IoMdSearch /></button>
+                <button type="submit"><IoMdSearch className="search-icon" size={20} /></button>
               </form>
             </li>
             {userEmail && (
@@ -136,7 +136,7 @@ const Header = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button type="submit"><IoMdSearch /></button>
+            <button type="submit"><IoMdSearch className="search-icon" size={20} /></button>
           </form>
           
           <button 

@@ -255,7 +255,7 @@
 .header-right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  /* gap: 1.5rem; */
 }
 
 .search-form {
@@ -271,13 +271,14 @@
 }
 
 .search-form button {
-  background-color: transparent;
+  /* background-color: transparent; */
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  color: white;
+  /* padding: 0.5rem; */
 }
 
 .user-actions {

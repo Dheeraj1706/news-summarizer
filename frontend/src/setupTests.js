@@ -28,6 +28,18 @@ class MockIntersectionObserver {
 
 window.IntersectionObserver = MockIntersectionObserver;
 
+// Suppress React Router warnings
+const originalConsoleWarn = console.warn;
+console.warn = (...args) => {
+  if (args[0] && typeof args[0] === 'string' && 
+      (args[0].includes('React Router') || 
+       args[0].includes('Future Flag Warning') ||
+       args[0].includes('v7_relativeSplatPath'))) {
+    return;
+  }
+  originalConsoleWarn(...args);
+};
+
 // Additional cleanup after each test
 afterEach(() => {
   jest.clearAllMocks();
