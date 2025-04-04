@@ -13,7 +13,7 @@ JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'super-secret')  # Change in p
 JWT_ACCESS_TOKEN_EXPIRES = 3600  # 1 hour
 
 # News API
-NEWS_API_KEY = os.environ.get('NEWS_API_KEY', '9dd60cdb2dda43d78a020e9450fbc3da')
+NEWS_API_KEY = os.environ.get('NEWS_API_KEY', '1d87918962eb411d8b22687ef2fcf44d')
 NEWS_API_URL = 'https://newsapi.org/v2'
 
 
