@@ -9,18 +9,20 @@
   }
   
   .header-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
     height: 64px;
+    position: relative;
   }
   
   .logo {
     display: flex;
     align-items: center;
+    padding-left: 10px;
   }
   
   .logo-text {
@@ -29,13 +31,14 @@
     font-weight: 700;
     color: white;
     text-decoration: none;
+    white-space: nowrap;
   }
   
   .logo span {
     color: #fff;
     background-color: #000;
     padding: 2px 4px;
-    margin-left: -100px;
+    margin-left: 2px;
   }
   
   .menu-toggle {
@@ -89,6 +92,7 @@
   .nav-menu {
     display: flex;
     align-items: center;
+    margin-right: 60px;
   }
   
   .nav-menu ul {
@@ -337,6 +341,10 @@
 }
 
 .favorites-button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   background-color: transparent;
@@ -348,7 +356,6 @@
   border-radius: 20px;
   transition: background-color 0.2s;
   font-size: 0.9rem;
-  position: relative;
 }
 
 .favorites-button:hover {
@@ -361,9 +368,6 @@
 }
 
 .favorites-count {
-  position: absolute;
-  top: 0;
-  right: 0;
   background-color: #e91e63;
   color: white;
   font-size: 0.7rem;
@@ -374,6 +378,7 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  margin-left: 4px;
 }
 
 .mobile-toggle {

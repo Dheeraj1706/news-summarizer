@@ -71,7 +71,16 @@ h1, h2, h3, h4, h5, h6 {
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 2rem;
-  margin-top: 2rem;
+  margin: 2rem auto;
+  max-width: 1400px;
+  padding: 0 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  min-width: 0; /* Prevents content from overflowing */
+  overflow-wrap: break-word; /* Ensures text wraps properly */
 }
 
 h2 {
@@ -92,6 +101,7 @@ h2 {
 @media (max-width: 992px) {
   .content-layout {
     grid-template-columns: 1fr;
+    padding: 0 1rem;
   }
   
   .sidebar {
