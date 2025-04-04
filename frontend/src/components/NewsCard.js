@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/components/NewsCard.css';
 import { FaVolumeUp, FaStop, FaHeart, FaRegHeart } from 'react-icons/fa';
+import { summarizeArticle } from '../services/api';
 
 // PRE-GENERATED AI SUMMARIES FOR DEMO
 const ARTICLE_SUMMARIES = {
@@ -76,15 +77,21 @@ const NewsCard = ({ article }) => {
     
     setLoading(true);
     try {
-      // Simulate NLP processing delay for realism
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      // Get the text to summarize
+      const textToSummarize = `${title}. ${description || ''}`;
       
-      // Get pre-generated summary based on article content
-      const generatedSummary = getAppropriateArticleSummary();
+      // Call the backend API for real summarization
+      const response = await summarizeArticle(textToSummarize);
       
-      setSummary(generatedSummary);
+      if (response.status === 'success') {
+        setSummary(response.data.summary);
+      } else {
+        console.error('Error in summary response:', response);
+        setSummary('Unable to generate summary. Please try again later.');
+      }
     } catch (error) {
       console.error('Error generating summary:', error);
+      setSummary('Unable to generate summary. Please try again later.');
     } finally {
       setLoading(false);
     }
