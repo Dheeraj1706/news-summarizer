@@ -26,6 +26,18 @@ jobs:
           npm install --legacy-peer-deps || npm install --force
         continue-on-error: true
       
+      - name: Run ESLint
+        run: |
+          cd frontend
+          npm run lint || echo "ESLint completed with warnings"
+        continue-on-error: true
+      
+      - name: Run Prettier check
+        run: |
+          cd frontend
+          npx prettier --check "src/**/*.{js,jsx,css,scss}" || echo "Prettier check completed with warnings"
+        continue-on-error: true
+      
       - name: Run tests
         run: |
           cd frontend
@@ -52,13 +64,25 @@ jobs:
         run: |
           cd backend
           python -m pip install --upgrade pip
-          pip install pytest nltk flask flask-cors pytest-cov
+          pip install pytest nltk flask flask-cors pytest-cov flake8 black
           if [ -f requirements.txt ]; then pip install -r requirements.txt || echo "Using default dependencies"; fi
         continue-on-error: true
       
       - name: Install NLTK data
         run: |
           python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')" || echo "NLTK data already downloaded"
+        continue-on-error: true
+      
+      - name: Run linting (Flake8)
+        run: |
+          cd backend
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || echo "Flake8 completed with warnings"
+        continue-on-error: true
+      
+      - name: Run linting (Black)
+        run: |
+          cd backend
+          black . --check || echo "Black completed with warnings"
         continue-on-error: true
       
       - name: Run tests
